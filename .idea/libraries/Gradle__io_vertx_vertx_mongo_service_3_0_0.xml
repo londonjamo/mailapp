@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: io.vertx:vertx-mongo-service:3.0.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.vertx/vertx-mongo-service/3.0.0/f608ec7593eb1c60f6ba0b026e34462410403166/vertx-mongo-service-3.0.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.vertx/vertx-mongo-service/3.0.0/c291871bff8ed8b98fd37aeb110606359e00b662/vertx-mongo-service-3.0.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

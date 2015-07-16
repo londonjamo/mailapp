@@ -1,0 +1,85 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<html>
+<head>
+    <!-- CSS ===================== -->
+    <!-- load bootstrap -->
+    <!-- <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 30px;
+        }
+    </style>
+
+    <!-- JS ===================== -->
+    <!-- load angular -->
+    <!-- <script src="http://code.angularjs.org/1.2.6/angular.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.1/angular.min.js"></script>
+    <script src="js/app.js"></script>
+</head>
+
+<!-- apply angular app and controller to our body -->
+<body ng-app="sendEmailApp" ng-controller="mainController">
+<div class="container">
+    <div class="col-sm-8 col-sm-offset-2">
+
+        <!-- PAGE HEADER -->
+        <div class="page-header"><h1>Send An Email to Someone</h1></div>
+
+        <!-- FORM -->
+        <!-- pass in the variable if our form is valid or invalid -->
+        <form name="userForm" ng-submit="submitForm(userForm.$valid)" novalidate>
+
+            <!-- NAME -->
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" name="name" class="form-control" ng-model="name" required>
+
+                <p ng-show="userForm.name.$invalid && !userForm.name.$pristine" class="help-block">You name is required.</p>
+            </div>
+
+            <!-- FROM -->
+            <div class="form-group">
+                <label>Sender Email</label>
+                <input type="email" name="from" class="form-control" ng-model="from" required>
+
+                <p ng-show="userForm.from.$invalid && !userForm.from.$pristine" class="help-block">Enter a valid email.</p>
+            </div>
+
+            <!-- TO -->
+            <div class="form-group">
+                <label>Recipient Email</label>
+                <input type="email" name="to" class="form-control" ng-model="to" required>
+
+                <p ng-show="userForm.to.$invalid && !userForm.to.$pristine" class="help-block">Enter a valid email.</p>
+            </div>
+
+            <!-- SUBJECT -->
+            <div class="form-group">
+                <label>Subject</label>
+                <input type="text" name="subject" class="form-control" ng-model="subject" ng-minlength="3" ng-maxlength="32" required>
+
+                <p ng-show="userForm.subject.$invalid && !userForm.subject.$pristine" class="help-block">Enter a subject.</p>
+            </div>
+
+            <!-- Text -->
+            <div class="form-group">
+                <label>Text</label>
+                <input type="text" name="messageRequest" class="form-control" ng-model="messageRequest" ng-minlength="3" ng-maxlength="8" required>
+
+                <p ng-show="userForm.text.$invalid && !userForm.text.$pristine" class="help-block">Enter a messageRequest.</p>
+            </div>
+
+            <!-- SUBMIT BUTTON -->
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+        </form>
+
+    </div>
+    <!-- col-sm-8 -->
+</div>
+<!-- /container -->
+</body>
+</html>
