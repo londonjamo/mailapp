@@ -1,0 +1,7 @@
+{
+  "MAILGUN_URL"  : "https://api.mailgun.net/v3/sandboxf4163ef4f52a472faddab35cb19c1883.mailgun.org/messages",
+  "MAILGUN_KEY"  : "key-b10fcab698aa1b2429fab8c3a2835e2c",
+  "MANDRILL_URL" : "https://mandrillapp.com:443/api/1.0/messages/send.json",
+  "MANDRILL_KEY" : "AfalKpHeJOo5CmREeZp7Sg"
+}
+

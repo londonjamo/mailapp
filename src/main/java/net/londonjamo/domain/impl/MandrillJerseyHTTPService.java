@@ -17,21 +17,30 @@ import java.util.Map;
  * Created by jamo on 6/16/15.
  */
 public class MandrillJerseyHTTPService implements MailService {
-
-    public static final String MANDRILL_URL = "https://mandrillapp.com:443/api/1.0/messages/send.json";
-    public static final String KEY = "AfalKpHeJOo5CmREeZp7Sg";
+    private String mandrillUrl;
+    private String mandrillKey;
 
     Client client;
 
     public MandrillJerseyHTTPService(Vertx vertx) {
+        mandrillKey = vertx.getOrCreateContext().config().getString("MANDRILL_KEY");
+        mandrillUrl = vertx.getOrCreateContext().config().getString("MANDRILL_URL");
+
+        client = Client.create();
+    }
+
+    public MandrillJerseyHTTPService(JsonObject options) {
+        mandrillKey = options.getString("MANDRILL_KEY");
+        mandrillUrl = options.getString("MANDRILL_URL");
+
         client = Client.create();
     }
 
     public MessageResponse send(MessageRequest messageRequest) {
-        WebResource webResource = client.resource(MANDRILL_URL);
+        WebResource webResource = client.resource(mandrillUrl);
         JsonObject mandrillJson = new JsonObject();
         JsonObject mandrillMessage = new JsonObject();
-        mandrillJson.put("key", KEY);
+        mandrillJson.put("key", mandrillKey);
         mandrillMessage.put("text", messageRequest.getDetails().getString("text"));
         mandrillMessage.put("subject", messageRequest.getDetails().getString("subject"));
         mandrillMessage.put("from_email", messageRequest.getDetails().getString("from"));

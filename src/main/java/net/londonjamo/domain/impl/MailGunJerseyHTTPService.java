@@ -1,5 +1,6 @@
 package net.londonjamo.domain.impl;
 
+import io.vertx.core.json.JsonObject;
 import net.londonjamo.domain.MailService;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -16,18 +17,28 @@ import javax.ws.rs.core.MediaType;
  * Created by jamo on 6/16/15.
  */
 public class MailGunJerseyHTTPService implements MailService {
-    public static final String KEY = "key-b10fcab698aa1b2429fab8c3a2835e2c";
-    public static final String MAILGUN_URL = "https://api.mailgun.net/v3/sandboxf4163ef4f52a472faddab35cb19c1883.mailgun.org/messages";
+    private String mailgunKey;
+    private String mailgunUrl;
 
     Client client;
 
     public MailGunJerseyHTTPService(Vertx vertx) {
+        mailgunKey = vertx.getOrCreateContext().config().getString("MAILGUN_KEY");
+        mailgunUrl = vertx.getOrCreateContext().config().getString("MAILGUN_URL");
+
+        client = Client.create();
+    }
+
+    public MailGunJerseyHTTPService(JsonObject options) {
+        mailgunKey = options.getString("MAILGUN_KEY");
+        mailgunUrl = options.getString("MAILGUN_URL");
+
         client = Client.create();
     }
 
     public MessageResponse send(MessageRequest messageRequest) {
-        client.addFilter(new HTTPBasicAuthFilter("api", KEY));
-        WebResource webResource = client.resource(MAILGUN_URL);
+        client.addFilter(new HTTPBasicAuthFilter("api", mailgunKey));
+        WebResource webResource = client.resource(mailgunUrl);
 
         MultivaluedMapImpl formData = new MultivaluedMapImpl();
         formData.add("from", messageRequest.getDetails().getString("from"));
