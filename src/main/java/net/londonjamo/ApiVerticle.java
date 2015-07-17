@@ -18,7 +18,7 @@ public class ApiVerticle extends AbstractVerticle {
     public void start() throws Exception {
         Router router = Router.router(getVertx());
         router.mountSubRouter("/mail", getRouter(getVertx()));
-        router.route("/static/*").handler(StaticHandler.create());
+        router.route("/mailapp/*").handler(StaticHandler.create());
 
         getVertx().createHttpServer().requestHandler(router::accept).listen(8080);
     }
@@ -31,24 +31,19 @@ public class ApiVerticle extends AbstractVerticle {
 
         router.get("/check/:id").handler(rc -> {
             String id = rc.request().getParam("id");
-            System.out.println("checking message: " + id);
             vertx.eventBus().send("GET_MESSAGE", new JsonObject().put("id", id), res -> {
-                System.out.println("Received message from db: " + res.result().body());
-
                 if (res.succeeded()) {
-                    System.out.println("Received message from db: " + res.result().body());
                     rc.response().end(res.result().body().toString());
                 } else {
                     rc.response().setStatusCode(404).setStatusMessage("unable to get mail").end();
                 }
-
             });
         });
 
         router.post("/send").handler(rc -> {
-            System.out.println("dfgfsdsdfsdfssfsfsfssdsfssdfsfs");
             String id = "" + sequence.getId();
             JsonObject message = rc.getBodyAsJson();
+            System.out.println("MESSAGE IS " + message);
             DeliveryOptions options = new DeliveryOptions();
             options.addHeader("id", id);
             options.addHeader("received", System.currentTimeMillis() + "");
@@ -58,7 +53,6 @@ public class ApiVerticle extends AbstractVerticle {
                     MessageRequest m = new MessageRequest(new JsonObject(res.result().body().toString()));
                     vertx.eventBus().send("SEND_QUEUE", m, options, ar -> {
                         if (ar.succeeded()) {
-                            System.out.println("Received reply: " + ar.result().body());
                             rc.response().end(new JsonObject().put("id", id).put("response", ar.result().body()).encode());
                         } else {
                             rc.response().setStatusCode(500).setStatusMessage("unable to send mail").end();

@@ -5,8 +5,7 @@
 <head>
     <!-- CSS ===================== -->
     <!-- load bootstrap -->
-    <!-- <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"> -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="mailapp/css/bootstrap.min.css">
     <style>
         body {
             padding-top: 30px;
@@ -15,9 +14,8 @@
 
     <!-- JS ===================== -->
     <!-- load angular -->
-    <!-- <script src="http://code.angularjs.org/1.2.6/angular.js"></script> -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.1/angular.min.js"></script>
-    <script src="js/app.js"></script>
+    <script src="mailapp/js/app.js"></script>
 </head>
 
 <!-- apply angular app and controller to our body -->
@@ -59,7 +57,7 @@
             <!-- SUBJECT -->
             <div class="form-group">
                 <label>Subject</label>
-                <input type="text" name="subject" class="form-control" ng-model="subject" ng-minlength="3" ng-maxlength="32" required>
+                <input type="text" name="subject" class="form-control" ng-model="subject" ng-minlength="1" ng-maxlength="32" required>
 
                 <p ng-show="userForm.subject.$invalid && !userForm.subject.$pristine" class="help-block">Enter a subject.</p>
             </div>
@@ -67,9 +65,9 @@
             <!-- Text -->
             <div class="form-group">
                 <label>Text</label>
-                <input type="text" name="messageRequest" class="form-control" ng-model="messageRequest" ng-minlength="3" ng-maxlength="8" required>
+                <textarea class="form-control" rows="5" name="message" ng-model="message"  ng-minlength="1" ng-maxlength="256" required></textarea>
 
-                <p ng-show="userForm.text.$invalid && !userForm.text.$pristine" class="help-block">Enter a messageRequest.</p>
+                <p ng-show="userForm.text.$invalid && !userForm.text.$pristine" class="help-block">Enter a message.</p>
             </div>
 
             <!-- SUBMIT BUTTON -->

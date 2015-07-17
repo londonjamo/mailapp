@@ -22,23 +22,17 @@ public class MapDBMessageRepository implements MessageRepository {
     public void addResponse(String messageRequestId, String sendInfo) {
         MessageRequest messageRequest = getMessage(messageRequestId);
         messageRequest.addResponse(new JsonObject(sendInfo));
-        saveMesage(messageRequestId, messageRequest);
+        saveMessage(messageRequestId, messageRequest);
     }
 
     @Override
-    public void saveMesage(String key, MessageRequest messageRequest) {
-        System.out.println("saving messageRequest " + messageRequest);
-
+    public void saveMessage(String key, MessageRequest messageRequest) {
         db.put(key, messageRequest.encode());
-
-        System.out.println(db.values());
-        System.out.println(db.keySet());
     }
 
     @Override
     public MessageRequest getMessage(String key) {
         String result = db.get(key);
-        System.out.println(result);
         return new MessageRequest(new JsonObject(result));
     }
 }

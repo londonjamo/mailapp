@@ -30,8 +30,6 @@ public class MailManager extends AbstractVerticle {
         MessageConsumer<MessageRequest> newMessageListener = eb.consumer("SEND_QUEUE");
 
         newMessageListener.handler(message -> {
-            System.out.println("DEBUG2 " + message);
-
             MessageResponse response = sendMail(services, message.body());
             message.reply(response.encode());
         });
@@ -43,20 +41,16 @@ public class MailManager extends AbstractVerticle {
         MailService flop = services.get(0);
 
         MessageResponse r = flip.send(messageRequest);
-        System.out.println("\nTRYING ONE\n");
-        System.out.println(flip.toString() + " !!! send: " + r);
         DeliveryOptions options = new DeliveryOptions().addHeader("id", messageRequest.getId());
         vertx.eventBus().send("RESPONSE_QUEUE", r, options);
 
         if (!r.isSuccessful()) {
-            System.out.println("\nTRYING TWO\n");
             Collections.reverse(services);
             r = flop.send(messageRequest);
             vertx.eventBus().send("RESPONSE_QUEUE", r,options);
         }
 
         // TODO should really put on DLQ if still unsuccessful
-
         return r;
     }
 

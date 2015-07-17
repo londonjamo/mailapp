@@ -10,7 +10,7 @@ import net.londonjamo.domain.MessageRequest;
  * Created by jamo on 5/18/15.
  */
 
-public class MessageRequestCodec implements MessageCodec<MessageRequest, MessageRequest> {
+public class  MessageRequestCodec implements MessageCodec<MessageRequest, MessageRequest> {
 
     @Override
     public void encodeToWire(Buffer buffer, MessageRequest messageRequest) {

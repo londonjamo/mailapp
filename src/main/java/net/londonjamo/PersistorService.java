@@ -30,29 +30,14 @@ public class PersistorService extends AbstractVerticle {
             message.reply(m.encode());
         });
 
-//        MessageConsumer<JsonObject> updateListener = eb.consumer("UPDATE_MESSAGE");
-//        updateListener.handler(message -> {
-//            System.out.println("UM1" + message.body().toString());
-//            System.out.println("UM2" + message.headers().toString());
-//            String id = message.body().getString("id");
-//            JsonObject value = message.body().getJsonObject("send-info");
-//            String key = message.body().getString("key");
-//            updateMetaData(id, key, value);
-//        });
-
         MessageConsumer<MessageResponse> responseListener = eb.consumer("RESPONSE_QUEUE");
         responseListener.handler(message -> {
-            System.out.println("UM1" + message.body().toString());
-            System.out.println("UM2" + message.headers().toString());
             String id = message.headers().get("id");
             updateMessageRequestWithResponse(id,message.body().getJson());
-
         });
 
         MessageConsumer<JsonObject> getListener = eb.consumer("GET_MESSAGE");
         getListener.handler(message -> {
-            System.out.println("GET" + message.body());
-            System.out.println("GET2" + message.headers().toString());
             String id = message.body().getString("id");
             MessageRequest dbEntry = getMessage(id);
             message.reply(dbEntry);
@@ -61,12 +46,10 @@ public class PersistorService extends AbstractVerticle {
     }
 
     public void persist(String key, MessageRequest messageRequest) {
-        System.out.println("persisting " + key + ":" + messageRequest.encode());
-        repo.saveMesage(key, messageRequest);
+        repo.saveMessage(key, messageRequest);
     }
 
     public void updateMessageRequestWithResponse(String messageRequestId, JsonObject response) {
-        System.out.println("updating " + messageRequestId +":"+ response);
         repo.addResponse(messageRequestId,response.encode());
     }
 
@@ -78,7 +61,6 @@ public class PersistorService extends AbstractVerticle {
     }
 
     public MessageRequest getMessage(String messageId) {
-        System.out.println("getting " + messageId );
         return repo.getMessage(messageId);
     }
 

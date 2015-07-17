@@ -11,6 +11,7 @@ import net.londonjamo.domain.MessageRequest;
 import net.londonjamo.domain.MessageResponse;
 
 import javax.ws.rs.core.MediaType;
+import java.util.Map;
 
 /**
  * Created by jamo on 6/16/15.
@@ -28,7 +29,6 @@ public class MandrillJerseyHTTPService implements MailService {
 
     public MessageResponse send(MessageRequest messageRequest) {
         WebResource webResource = client.resource(MANDRILL_URL);
-        System.out.println("DEBUG"+ messageRequest);
         JsonObject mandrillJson = new JsonObject();
         JsonObject mandrillMessage = new JsonObject();
         mandrillJson.put("key", KEY);
@@ -37,15 +37,14 @@ public class MandrillJerseyHTTPService implements MailService {
         mandrillMessage.put("from_email", messageRequest.getDetails().getString("from"));
         mandrillMessage.put("from_name", messageRequest.getDetails().getString("from_name", ""));
         mandrillMessage.put("to", new JsonArray().add(new JsonObject().put("email", messageRequest.getDetails().getString("from")).put("type", "to")));
-        mandrillJson.put("messageRequest", mandrillMessage);
+        mandrillJson.put("message", mandrillMessage);
 
         ClientResponse cr = webResource.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, mandrillJson.encode());
-        System.out.println("1" + cr.getStatusInfo().toString());
         String responseString = cr.getEntity(String.class);
 
-        MessageResponse response = new MessageResponse(responseString);
+        MessageResponse response = new MessageResponse(new JsonArray(responseString).getJsonObject(0));
+
         int status = cr.getStatus();
-        System.out.println( "FOOm"+status);
         if (status == 200) {
             response.setSuccessful(true);
         } else {

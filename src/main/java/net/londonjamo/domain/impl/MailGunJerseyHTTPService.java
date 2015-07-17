@@ -38,7 +38,6 @@ public class MailGunJerseyHTTPService implements MailService {
         ClientResponse cr = webResource.type(MediaType.APPLICATION_FORM_URLENCODED).post(ClientResponse.class, formData);
         MessageResponse response = new MessageResponse(cr.getEntity(String.class));
         int status = cr.getStatus();
-        System.out.println( "FOO"+status);
         if (status == 200) {
             response.setSuccessful(true);
         } else {
